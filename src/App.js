@@ -1,7 +1,13 @@
 import { useState } from "react";
-
+const initialItems = [
+  { id: 1, description: "Passports", quantity: 2, packed: false },
+  { id: 2, description: "Socks", quantity: 12, packed: false },
+  { id: 3, description: "Telephone", quantity: 12, packed: false },
+  { id: 4, description: "Alephone", quantity: 12, packed: false },
+  { id: 5, description: "Bootl", quantity: 12, packed: false },
+];
 export default function App() {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(initialItems);
 
   function handleAddItems(newItem) {
     setItems(() => [...items, newItem]);
@@ -19,6 +25,13 @@ export default function App() {
     );
   }
 
+  function handleClear() {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete all items?"
+    );
+    if (confirmed) setItems(() => []);
+  }
+
   return (
     <div className="app">
       <Logo />
@@ -27,6 +40,7 @@ export default function App() {
         items={items}
         onDeleteItem={handleDeleteItem}
         onToggle={handleToggleItem}
+        onClear={handleClear}
       />
       <Stats items={items} />
     </div>
@@ -93,11 +107,30 @@ function Form({ onAddItem }) {
   );
 }
 
-function PackingList({ items, onDeleteItem, onToggle }) {
+function PackingList({ items, onDeleteItem, onToggle, onClear }) {
+  const [sortBy, setSortBy] = useState("");
+  let sortedItems;
+
+  switch (sortBy) {
+    case "description":
+      sortedItems = items
+        .slice()
+        .sort((a, b) => a.description.localeCompare(b.description));
+      break;
+    case "packed":
+      sortedItems = items
+        .slice()
+        .sort((a, b) => Number(a.packed) - Number(b.packed));
+      break;
+    default:
+      sortedItems = items;
+      break;
+  }
+
   return (
     <div className="list">
       <ul>
-        {items.map((item) => (
+        {sortedItems.map((item) => (
           <Item
             item={item}
             key={item.id}
@@ -106,6 +139,21 @@ function PackingList({ items, onDeleteItem, onToggle }) {
           />
         ))}
       </ul>
+
+      <div className="actions">
+        <select
+          value={sortBy}
+          onChange={(e) => {
+            //console.log(e.target.value);
+            return setSortBy(e.target.value);
+          }}
+        >
+          <option value="input">Sort by input</option>
+          <option value="description">Sort by description</option>
+          <option value="packed">Sort by packed status</option>
+        </select>
+        <button onClick={onClear}>Clear list</button>
+      </div>
     </div>
   );
 }
