@@ -1,4 +1,10 @@
+# FAR AWAY - TRAVEL LIST
+
+![1](https://github.com/SEIDY-KANTE/Travel_List/assets/82980518/a1b1d689-95cc-4657-95c3-81b90b6cea9c)
+![image](https://github.com/SEIDY-KANTE/Travel_List/assets/82980518/306de6eb-5f6e-4a4d-a2cf-83e2d9140b7f)
+
 # Getting Started with Create React App
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
